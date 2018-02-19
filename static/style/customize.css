@@ -1,0 +1,17 @@
+@font-face {
+    font-family: "Starjedi";
+    src: url(Starjedi.ttf) format("truetype");
+}
+
+table {
+    font-family: Starjedi;
+}
+
+body {
+    background-image: url(/static/style/pictures/swbg.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: black;
+}
