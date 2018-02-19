@@ -7,14 +7,45 @@ $(function () {
         success: function (results) {
             $.each(results.results, function (i, result) {
                 $results.append('<tr><td>' + result.name + '</td>' +
-                                '<td>' + result.diameter + '</td>' +
+                                '<td>' + commalize(result.diameter) + ' km' +  '</td>' +
                                 '<td>' + result.climate + '</td>' +
                                 '<td>' + result.terrain + '</td>' +
-                                '<td>' + result.surface_water+ '</td>' +
-                                '<td>' + result.population + '</td>' +
-                                '<td>' + result.residents + '</td></tr>')
+                                '<td>' + result.surface_water + '%' + '</td>' +
+                                '<td>' + commalizePopulation(result.population) + '</td>' +
+                                '<td>' + isResident(result.residents) + '</td></tr>')
             })
         }
     })
 });
 
+
+function isResident(residents) {
+    if (residents.length === 0) {
+        return "No known residents"
+    }
+    else {
+        return '<button class="btn btn-warning">'+ residents.length + ' Resident(s)</button>'
+    }
+}
+
+function commalize (number) {
+    var result;
+    if (number != 'unknown') {
+        result = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    else {
+        result = number;
+    }
+    return result;
+}
+
+function commalizePopulation(number) {
+    var result;
+    if (number != 'unknown') {
+        result = commalize(number) + ' people';
+    }
+    else {
+        result = number;
+    }
+    return result;
+}
