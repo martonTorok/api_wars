@@ -1,0 +1,29 @@
+
+{% block content %}
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+        <ul class="navbar-nav nav">
+            <li class="nav-item">
+                <a class="nav-link active" id="SWU">SWU</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">Voting</a>
+            </li>
+            <li class="nav-item">
+                <a href="#registrationModal" class="nav-link" data-toggle="modal" data-target="#registrationModal">Registration</a>
+            </li>
+            <li class="nav-item">
+                <a href="#loginModal" class="nav-link" data-toggle="modal" data-target="#loginModal">Login</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link">Signed in as:{% if session.username %}{{ session.username }}{% endif %}</a>
+            </li>
+        </ul>
+    </nav>
+
+{% endblock %}

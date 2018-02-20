@@ -1,0 +1,28 @@
+
+{% block content %}
+    <div class="modal fade dark" id="registrationModal" tabindex="-1" role="dialog" aria-labelledby="registrationModalLabel"
+         aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registrationModalLabel">Registration</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="registration" action="{{ url_for('registration') }}" method="POST">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" id="username" required minlength="3"><br>
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" required>
+                        <input type="button" class="btn btn-success" id="regSubmit" value="submit">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
