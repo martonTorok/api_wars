@@ -2,15 +2,21 @@ $(function () {
     var pageCounter = 1;
     var $results = $('#results');
     var currentResults = '';
+    var planetLength;
+
+
     loadResults(pageCounter);
 
     function loadResults(pageCounter) {
-        console.log(pageCounter);
+        var loggedIn = isLoggedIn();
+        console.log(loggedIn);
         $.ajax({
             type: 'GET',
             url: 'https://swapi.co/api/planets/?page=' + pageCounter,
             success: function (data) {
                 currentResults = data;
+                planetLength = data.count;
+                console.log(planetLength);
                 $.each(data.results, function (i, result) {
                     $results.append('<tr><td>' + result.name + '</td>' +
                         '<td>' + validateAndFormatDiameter(result.diameter) + '</td>' +
@@ -19,8 +25,11 @@ $(function () {
                         '<td>' + validateAndFormatWater(result.surface_water) + '</td>' +
                         '<td>' + validateAndFormatPopulation(result.population) + '</td>' +
                         '<td>' + validateResident(i, result) + '</td>' +
-                        '<td><button class="btn btn-outline-warning vote'+i+">Vote</button></td></tr>')
+                        (loggedIn ?
+                            '<td id="votecell"><button id="votebtn" class="btn btn-outline-warning vote' + i + '">Vote</button></td></tr>' :
+                            ''))
                 });
+                $
                 if (data.next === null) {
                     $('#next').attr('disabled', true)
                 } else {
@@ -41,7 +50,6 @@ $(function () {
                     var planetId = $(this).data('id');
                     var residents = currentResults.results[planetId].residents;
                     var postURL = currentResults.results[planetId].residents;
-                    console.log(planetId);
                     $.each(residents, function (i, resident) {
                         $.ajax({
                             type: 'GET',
@@ -175,7 +183,39 @@ $(function () {
     });
     $('#navbarRegistration').on('click', function () {
         $('#invalidRegistration').hide();
-    })
+    });
+
+
+    function isLoggedIn() {
+        var loggedIn = false;
+        $.ajax({
+            url: '/valLog',
+            type: 'GET',
+            async: false,
+            success: function (response) {
+                if (response.loggedin === true) {
+                    loggedIn = true;
+                    return true
+                }
+            }
+        });
+        return loggedIn
+    }
+
+    function getPlanets() {
+        var planetList = [];
+        for (i = 1; i < 8; i++) {
+            $.ajax({
+                url: 'https://swapi.co/api/planets/?page=' + i,
+                type: 'GET',
+                success: function (data) {
+                    planetList.push(data.results[i].name)
+                    return planetList
+                }
+            })
+        }
+    }
+    console.log(getPlanets());
 
 
     function validateResident(i, results) {

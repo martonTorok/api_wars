@@ -55,11 +55,18 @@ def logout():
     session.pop('username', None)
     return redirect('/')
 
+
+@app.route('/valLog')
+def is_logged_in():
+    if 'username' in session:
+        return jsonify(loggedin=True)
+    else:
+        return jsonify(loggedin=False)
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
         port=5442,
         debug=True,
     )
-
-
