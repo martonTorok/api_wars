@@ -11,7 +11,6 @@
             </div>
         </div>
     </div>
-    <div class="container">
         <table class="table table-striped table-hover table-dark">
             <thead>
             <tr>
@@ -22,39 +21,25 @@
                 <th scope="col">SURFACE WATER</th>
                 <th scope="col">POPULATION</th>
                 <th scope="col">ACTIONS</th>
+                <th></th>
             </tr>
             </thead>
             <tbody id="results">
             </tbody>
         </table>
-    </div>
 
-    <div class="container">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#residentModal">
-            Resident
-        </button>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade dark" id="test" tabindex="-1" role="dialog" aria-labelledby="residentModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="residentModalLabel">Residents of smth</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+    <div class="container text-center ">
+        <div class="row">
+            <div class="col col-lg col-center">
+                <a id="top" href="#top" class="btn btn-primary">
+                    Go Top
+                </a>
             </div>
         </div>
     </div>
+    <!-- Modal -->
+
 
     {% include 'residents.html' %}
     {% include 'registration.html' %}

@@ -13,12 +13,13 @@ $(function () {
                 currentResults = data;
                 $.each(data.results, function (i, result) {
                     $results.append('<tr><td>' + result.name + '</td>' +
-                        '<td>' + commalize(result.diameter) + ' km' + '</td>' +
+                        '<td>' + validateAndFormatDiameter(result.diameter) + '</td>' +
                         '<td>' + result.climate + '</td>' +
                         '<td>' + result.terrain + '</td>' +
-                        '<td>' + result.surface_water + '%' + '</td>' +
-                        '<td>' + commalizePopulation(result.population) + '</td>' +
-                        '<td>' + validateResident(i, result) + '</td></tr>')
+                        '<td>' + validateAndFormatWater(result.surface_water) + '</td>' +
+                        '<td>' + validateAndFormatPopulation(result.population) + '</td>' +
+                        '<td>' + validateResident(i, result) + '</td>' +
+                        '<td><button class="btn btn-outline-warning vote'+i+">Vote</button></td></tr>')
                 });
                 if (data.next === null) {
                     $('#next').attr('disabled', true)
@@ -35,7 +36,7 @@ $(function () {
             },
             complete: function () {
                 $('#next', '#previous').attr('disabled', false);
-                $('body').on('click', '[class*="resident"]', function () {
+                $('[class*="resident"]').on('click', function () {
                     $('#residentResults').empty();
                     var planetId = $(this).data('id');
                     var residents = currentResults.results[planetId].residents;
@@ -64,27 +65,25 @@ $(function () {
     }
 
 
-    $('#residentModal').on('show.bs.modal', function () {
-        $(this).find('.modal-body').css({
-            width: 'auto', //probably not needed
-            height: 'auto', //probably not needed
-            width: '100%'
-        });
-    });
-
-
     $('#next').click(function () {
-        $('#next', '#previous').attr('disabled', true);
+        $('#next').attr('disabled', true);
+        $('#previous').attr('disabled', true);
         pageCounter = pageCounter + 1;
         $('#results').empty();
         loadResults(pageCounter);
     });
 
     $('#previous').click(function () {
-        $('#next', '#previous').attr('disabled', true);
+        $('#previous').attr('disabled', true);
+        $('#next').attr('disabled', true);
         pageCounter = pageCounter - 1;
         $('#results').empty();
         loadResults(pageCounter)
+    });
+
+    $("a[href='#top']").click(function () {
+        $("html, body").animate({scrollTop: 0}, "slow");
+        return false;
     });
 
 
@@ -184,12 +183,12 @@ $(function () {
             return "No known residents"
         }
         else {
-            return '<button type="button" class="btn btn-warning resident' + results.name + '" id="resident"' +
+            return '<button type="button" class="btn btn-outline-warning resident' + results.name + '" id="resident"' +
                 ' data-toggle="modal" data-target="#residentModal" data-id="' + i + '">' + results.residents.length + ' Resident(s)</button>'
         }
     }
 
-    function commalize(number) {
+    function validateAndFormat(number) {
         var result;
         if (number != 'unknown') {
             result = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -200,12 +199,34 @@ $(function () {
         return result;
     }
 
-    function commalizePopulation(number) {
+    function validateAndFormatPopulation(number) {
         var result;
         if (number != 'unknown') {
-            result = commalize(number) + ' people';
+            result = validateAndFormat(number) + ' people';
         }
         else {
+            result = number;
+        }
+        return result;
+    }
+
+    function validateAndFormatWater(number) {
+        var result;
+        if (number != 'unknown') {
+            result = validateAndFormat(number) + '%';
+        }
+        else {
+            result = number;
+        }
+        return result;
+
+    }
+
+    function validateAndFormatDiameter(number) {
+        var result;
+        if (number != 'unknown') {
+            result = validateAndFormat(number) + ' km';
+        } else {
             result = number;
         }
         return result;
