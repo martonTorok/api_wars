@@ -16,11 +16,47 @@ body {
     font-family: "STARWARS";
 }
 
-h1 {
-    color:yellow;
-    text-align: center;
+tbody {
+    font-family: Verdana;
 }
 
+h1 {
+    color:yellow;
+    display: inline-block;
+    margin-left:8%;
+}
+
+#next {
+    float:right;
+}
+
+#invalidLogin, #invalidRegistration {
+    color:red;
+}
+.modal-content {
+    width: fit-content;
+    text-align: center;
+    color:black;
+}
+
+#residentResults tr {
+    line-height: 25px;
+}
+
+#residentModal .table-hover tbody tr:nth-child(odd) td, .table-hover tbody tr:nth-child(odd) th {
+  background-color: rgba(0, 0, 0, 0.36);
+}
+
+#residentModal td {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.modal {
+    text-align: center;
+}
+.modal-dialog {
+    display:inline-block;
+}
 
 .navbar .brand, .navbar .nav > li > a {
     color: white !important;

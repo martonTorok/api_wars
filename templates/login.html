@@ -1,7 +1,7 @@
 {% block content %}
     <div class="modal fade dark" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
          aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog " role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="loginModalLabel">User Login</h5>
@@ -15,11 +15,12 @@
                         <input type="text" name="loginUsername" id="loginUsername" required autofocus><br>
                         <label for="loginPassword">Password</label>
                         <input type="password" name="password" id="loginPassword" required>
-                        <input type="button" class="btn btn-success" id="loginSubmit" value="submit">
                     </form>
+                    <p id="invalidLogin">Invalid Username or Password!</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    <input type="button" class="btn btn-outline-warning " id="loginSubmit" value="submit">
                 </div>
             </div>
         </div>

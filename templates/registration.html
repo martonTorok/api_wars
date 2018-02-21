@@ -16,11 +16,12 @@
                         <input type="text" name="username" id="username" required minlength="3"><br>
                         <label for="password">Password</label>
                         <input type="password" name="password" id="password" required>
-                        <input type="button" class="btn btn-success" id="regSubmit" value="submit">
+
                     </form>
+                    <p id="invalidRegistration">Username already taken!</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="button" class="btn btn-outline-warning" id="regSubmit" value="submit">
                 </div>
             </div>
         </div>

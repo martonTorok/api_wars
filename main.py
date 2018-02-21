@@ -8,7 +8,10 @@ app.secret_key = 'NQ$74dec029f7b51776fc3ede88e570bbc31b0ad0b8bdd8e8197b3'
 
 @app.route('/')
 def route_index():
-    return render_template('index.html')
+    logged_in = False
+    if 'username' in session:
+        logged_in = True
+    return render_template('index.html', logged_in=logged_in)
 
 
 @app.route('/registration', methods=['POST'])
