@@ -1,6 +1,18 @@
 import os
+import urllib
 import psycopg2
 import psycopg2.extras
+
+urllib.parse.uses_netloc.append('postgres')
+url = urllib.parse.urlparse(os.environ.get('DATABASE_URL'))
+connection = psycopg2.connect(
+    database=url.path[1:],
+    user=url.username,
+    password=url.password,
+    host=url.hostname,
+    port=url.port
+)
+
 
 def get_connection_string():
     user_name = os.environ.get('PSQL_USER_NAME')
