@@ -1,23 +1,23 @@
 $(function () {
     var pageCounter = 1;
-    var $results = $('#results');
     var currentResults = '';
-    var planetLength;
 
 
     loadResults(pageCounter);
 
     function loadResults(pageCounter) {
+        var $results = $('#results');
         var loggedIn = isLoggedIn();
-        console.log(loggedIn);
+        $('.progress').show();
+        $('#resultsTable').hide();
         $.ajax({
             type: 'GET',
             url: 'https://swapi.co/api/planets/?page=' + pageCounter,
             success: function (data) {
                 currentResults = data;
-                planetLength = data.count;
-                console.log(planetLength);
                 $.each(data.results, function (i, result) {
+                    var planetURL = result.url
+                    var planetId = planetURL.replace(/[^0-9]+/g, "");
                     $results.append('<tr><td>' + result.name + '</td>' +
                         '<td>' + validateAndFormatDiameter(result.diameter) + '</td>' +
                         '<td>' + result.climate + '</td>' +
@@ -26,10 +26,10 @@ $(function () {
                         '<td>' + validateAndFormatPopulation(result.population) + '</td>' +
                         '<td>' + validateResident(i, result) + '</td>' +
                         (loggedIn ?
-                            '<td id="votecell"><button id="votebtn" class="btn btn-outline-warning vote' + i + '">Vote</button></td></tr>' :
+                            '<td id="votecell"><button id="votebtn" class="btn btn-outline-warning vote' + i + '"' +
+                            'data-planetid="' + planetId + '" data-name="' + result.name + '">Vote</button></td></tr>' :
                             ''))
                 });
-                $
                 if (data.next === null) {
                     $('#next').attr('disabled', true)
                 } else {
@@ -41,15 +41,46 @@ $(function () {
                 } else {
                     $('#previous').attr('disabled', false)
                 }
+                $('[class*="vote"]').on('click', function () {
+                    var planetId = $(this).data('planetid');
+                    var planetName = $(this).data('name');
+                    var postData = {
+                        'planet_id': planetId,
+                        'planet_name': planetName
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '/planet/' + planetId + '/vote',
+                        data: JSON.stringify(postData, null, '\t'),
+                        contentType: 'application/json;charset=UTF-8',
+                        success: function (response) {
+                            if (response['success'] === true) {
+                                $('[data-name="' + response.planetname + '"]').css('background', '#00cf08');
+                                $('[data-name="' + response.planetname + '"]').css('border-color', '#00cf08');
+                                $('[data-name="' + response.planetname + '"]').html('Done');
+                                $('[data-name="' + response.planetname + '"]').attr('disabled', true);
+                                setTimeout(function () {
+                                    $('[data-name="' + response.planetname + '"]').css('background', '');
+                                    $('[data-name="' + response.planetname + '"]').css('border-color', '');
+                                    $('[data-name="' + response.planetname + '"]').html('Vote');
+                                    $('[data-name="' + response.planetname + '"]').attr('disabled', false);
+                                }, 2000)
+                            }
+                        }
+                    })
+                });
 
             },
             complete: function () {
+                $('.progress').fadeOut('slow');
+                $('#resultsTable').show();
                 $('#next', '#previous').attr('disabled', false);
                 $('[class*="resident"]').on('click', function () {
+                    $('#residentProgress').show();
+                    $('#residentsTable').hide();
                     $('#residentResults').empty();
                     var planetId = $(this).data('id');
                     var residents = currentResults.results[planetId].residents;
-                    var postURL = currentResults.results[planetId].residents;
                     $.each(residents, function (i, resident) {
                         $.ajax({
                             type: 'GET',
@@ -63,6 +94,10 @@ $(function () {
                                     '<td>' + result.eye_color + '</td>' +
                                     '<td>' + result.birth_year + '</td>' +
                                     '<td>' + result.gender + '</td></tr>')
+                            },
+                            complete: function () {
+                                $('#residentProgress').fadeOut('slow');
+                                $('#residentsTable').show();
                             }
                         })
                     })
@@ -71,6 +106,20 @@ $(function () {
             }
         });
     }
+
+    $('#navbarVotes').on('click', function () {
+        $('#votesResults').empty();
+        $.ajax({
+            type: 'GET',
+            url: '/vote-statistics',
+            success: function (results) {
+                $.each(results, function (i, result) {
+                    $('#votesResults').append('<tr><td>' + result.planet_name + '</td>' +
+                        '<td>' + result.votescount + '</td></tr>')
+                })
+            }
+        })
+    });
 
 
     $('#next').click(function () {
@@ -201,21 +250,6 @@ $(function () {
         });
         return loggedIn
     }
-
-    function getPlanets() {
-        var planetList = [];
-        for (i = 1; i < 8; i++) {
-            $.ajax({
-                url: 'https://swapi.co/api/planets/?page=' + i,
-                type: 'GET',
-                success: function (data) {
-                    planetList.push(data.results[i].name)
-                    return planetList
-                }
-            })
-        }
-    }
-    console.log(getPlanets());
 
 
     function validateResident(i, results) {

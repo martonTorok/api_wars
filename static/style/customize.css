@@ -48,6 +48,10 @@ h1 {
     background-color: #EEB638;
 }
 
+#votesModal .table-hover tbody tr:nth-child(odd) td, .table-hover tbody tr:nth-child(odd) th {
+    background-color: #EEB638;
+}
+
 #residentModal td {
     padding-top: 0;
     padding-bottom: 0;

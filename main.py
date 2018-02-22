@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-import query, werkzeug.security, json
+import query, werkzeug.security
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "NQ$74dec029f7b51776fc3ede88e570bbc31b0ad0b8bdd8e8197b3"
@@ -62,6 +63,24 @@ def is_logged_in():
         return jsonify(loggedin=True)
     else:
         return jsonify(loggedin=False)
+
+
+@app.route('/planet/<planetid>/vote', methods=['POST'])
+def vote_planet(planetid):
+    if request.method == 'POST':
+        username = session['username']
+        user_id = (query.get_user_id(username))['id']
+        print(user_id)
+        planet_name = request.json['planet_name']
+        planet_id = request.json['planet_id']
+        query.insert_into_votes(planet_id, planet_name, user_id)
+        return jsonify(success=True, planetname=planet_name)
+
+
+@app.route('/vote-statistics')
+def vote_statistics():
+    stats = query.get_planet_votes()
+    return jsonify(stats)
 
 
 if __name__ == '__main__':
