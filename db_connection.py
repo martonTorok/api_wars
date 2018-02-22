@@ -13,7 +13,7 @@ connection = psycopg2.connect(
     port=url.port
 )
 
-
+'''
 def get_connection_string():
     user_name = os.environ.get('PSQL_USER_NAME')
     password = os.environ.get('PSQL_PASSWORD')
@@ -31,10 +31,10 @@ def get_connection_string():
         )
     else:
         raise KeyError('Some necessary environment variable(s) are not defined')
-
+'''
 def open_database():
     try:
-        connection_string = get_connection_string()
+        connection_string = url
         connection = psycopg2.connect(connection_string)
         connection.autocommit = True
     except psycopg2.DatabaseError as exception:
