@@ -83,8 +83,4 @@ def vote_statistics():
     return jsonify(stats)
 
 
-app.run(
-    host='0.0.0.0',
-    port=5442,
-    debug=True,
-)
+
